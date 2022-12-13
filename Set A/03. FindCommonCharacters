@@ -1,0 +1,39 @@
+Problem Link : https://leetcode.com/problems/find-common-characters/
+
+Solution :
+
+```
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) {
+        vector<int> miniFreq(26, INT_MAX);
+        
+        for(int i=0;i<words.size();i++){
+            string &str = words[i];
+            vector<int> freq(26,0);
+            for(int j=0;j<str.length();j++){
+                freq[str[j]-'a']++;
+            }
+            
+            for(int j=0;j<26;j++){
+                miniFreq[j] = min(miniFreq[j], freq[j]);
+            }
+        }
+        
+        vector<string> ans;
+        for(int i=0;i<26;i++){
+            int f = miniFreq[i];
+            for(int j=0;j<f;j++){
+                char ch = (char)('a' + i);
+                // cout << ch << endl;
+                string s(1,ch);
+                ans.push_back(s);
+            }
+        }
+        return ans;
+    }
+};
+```
+
+TC : O(n)
+SC : O(1)
