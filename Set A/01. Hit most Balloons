@@ -4,40 +4,38 @@ Problem Link : https://practice.geeksforgeeks.org/problems/4e75764f8f1638eb4f1c5
 Solution : 
 
 ```
+// User function Template for C++
+
 class Solution {
   public:
     int mostBalloons(int N, pair<int, int> arr[]) {
-        if(N < 2) return N;
-        int maxPoints = 0;
-        int currMax, overlappingPoints, verticalPoints;
-        
-        map<double, int> slopeMap;
-        
-        for(int i=0;i<N;i++){
-            currMax = overlappingPoints = verticalPoints = 0;
-            for(int j=i+1;j<N;j++){
-                if(arr[i] == arr[j]){
-                    overlappingPoints++;
+        int ans = 0;
+        for(int i=0; i<N;i++){
+            int x1 = arr[i].first;
+            int y1 = arr[i].second;
+            unordered_map<double, int> mp;
+            int cnt = 0;
+            for(int j=0; j<N; j++){
+                int x2 = arr[j].first;
+                int y2 = arr[j].second;
+                if(x1 == x2 && y1 == y2){
+                    cnt++;
+                    continue;
                 }
-                else if(arr[i].first == arr[j].first){
-                    verticalPoints++;
-                }
-                else{
-                     int yDiff = arr[i].second - arr[j].second;
-                     int xDiff = arr[i].first - arr[j].first;
-                     
-                     double slope = 1.0* (yDiff)/ xDiff;
-                     
-                     slopeMap[slope]++;
-                     currMax = max(currMax, slopeMap[slope]);
-                }
-                currMax = max(currMax, verticalPoints);
+                double numerator = x2- x1;
+                double denomenator = y2-y1;
+                double slope = denomenator/numerator;
+                
+                mp[slope]++;
             }
-            maxPoints = max(maxPoints , currMax + overlappingPoints + 1);
-            slopeMap.clear();
+            for(auto it : mp){
+                ans = max(it.second + cnt, ans);
+            }
         }
-        return maxPoints;
+        return ans;
     }
 };
 
+TC : O(N*N)
+SC : O(N)
 ```
